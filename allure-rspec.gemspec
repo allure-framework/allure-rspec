@@ -3,7 +3,7 @@ $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "allure-rspec/version"
 
 Gem::Specification.new do |s|
-  s.name          = 'Allure RSpec Adaptor'
+  s.name          = 'allure-rspec'
   s.version       = AllureRSpec::Version::STRING
   s.platform         = Gem::Platform::RUBY
   s.authors       = ['Ilya Sadykov']

@@ -47,7 +47,7 @@ describe AllureRSpec do
       0.should == 0
     end
 
-    attach_file ""screenshot2"", take_screenshot_as_file
+    attach_file "screenshot2", take_screenshot_as_file
   end
 end
 ```

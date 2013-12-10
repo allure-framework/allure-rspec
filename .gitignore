@@ -4,6 +4,7 @@
 *.jar
 *.war
 *.ear
+*.gem
 
 target
 allure

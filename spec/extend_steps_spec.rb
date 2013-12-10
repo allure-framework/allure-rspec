@@ -10,7 +10,7 @@ describe AllureRSpec do
 
     step "step2" do
 
-      5.should be < 1
+      5.should be > 1
     end
 
     step "step3" do

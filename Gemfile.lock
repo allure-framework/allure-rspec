@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    Allure RSpec Adaptor (0.1)
+    allure-rspec (0.1)
       nokogiri
       rspec-steps (~> 0.1.1)
       uuid
@@ -34,7 +34,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  Allure RSpec Adaptor!
+  allure-rspec!
   bundler
   nokogiri (~> 1.6.0)
   rake

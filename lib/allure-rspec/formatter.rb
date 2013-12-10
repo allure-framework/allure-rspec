@@ -1,5 +1,6 @@
 require 'pathname'
 require 'uuid'
+require 'rspec/core/formatters/base_formatter'
 
 module AllureRSpec
 

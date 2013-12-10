@@ -36,7 +36,7 @@ describe AllureRSpec do
 
   it "should build" do
     step "step1" do
-      attach_file "screenshot1", take_screen_shot_as_file
+      attach_file "screenshot1", take_screenshot_as_file
     end
 
     step "step2" do
@@ -47,7 +47,7 @@ describe AllureRSpec do
       0.should == 0
     end
 
-    attach_file ""screenshot2"", take_screen_shot_as_file
+    attach_file ""screenshot2"", take_screenshot_as_file
   end
 end
 ```

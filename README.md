@@ -32,15 +32,16 @@ your current directory.
 ## Usage examples
 
 ```ruby
-describe AllureRSpec do
+describe MySpec do
 
-  it "should build" do
+  it "should be steps enabled" do
+
     step "step1" do
       attach_file "screenshot1", take_screenshot_as_file
     end
 
     step "step2" do
-      5.should be < 1
+      5.should be > 0
     end
 
     step "step3" do

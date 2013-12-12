@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
 gemspec
-gem 'rspec-steps', '~> 0.1.1'
+gem 'rspec', '~> 2.13.0'
 gem 'nokogiri', '~> 1.6.0'

@@ -1,10 +1,10 @@
 # Allure RSpec Adaptor
 
-## Release notes
-
-* 0.3 - Allure 1.4.0 format support
-
 Adaptor to use the Allure framework along with the RSpec
+
+## What's new
+
+* 0.3 - Allure 1.4.0 format support.
 
 ## Setup
 

@@ -45,10 +45,14 @@ module AllureRSpec
       super
     end
 
+    def start(example_count)
+      dir = Pathname.new(AllureRSpec::Config.output_dir)
+      FileUtils.rm_rf(dir)
+    end
+
     def stop
       AllureRSpec::Builder.each_suite_build do |suite, xml|
         dir = Pathname.new(AllureRSpec::Config.output_dir)
-        FileUtils.rm_rf(dir)
         FileUtils.mkdir_p(dir)
         File.open(dir.join("#{UUID.new.generate}.xml"), 'w+') do |file|
           file.write(xml)

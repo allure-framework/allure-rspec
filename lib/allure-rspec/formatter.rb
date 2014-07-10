@@ -54,9 +54,17 @@ module AllureRSpec
       AllureRSpec::Builder.each_suite_build do |suite, xml|
         dir = Pathname.new(AllureRSpec::Config.output_dir)
         FileUtils.mkdir_p(dir)
-        File.open(dir.join("#{UUID.new.generate}.xml"), 'w+') do |file|
+        out_file = dir.join("#{UUID.new.generate}.xml")
+        File.open(out_file, 'w+') do |file|
           file.write(xml)
         end
+
+        #xsd = Nokogiri::XML::Schema(File.read("allure-model.xsd"))
+        #doc = Nokogiri::XML(File.read(out_file))
+        #
+        #xsd.validate(doc).each do |error|
+        #  puts error.message
+        #end
       end
       super
     end

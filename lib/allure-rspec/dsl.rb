@@ -46,7 +46,7 @@ module AllureRSpec
       AllureRSpec::Builder.add_attachment(suite, test, {
           :type => type,
           :title => title,
-          :source => attachment,
+          :source => attachment.basename,
           :size => File.stat(attachment).size
       }, step)
     end

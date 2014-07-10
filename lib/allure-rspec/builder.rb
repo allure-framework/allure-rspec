@@ -81,6 +81,7 @@ module AllureRSpec
             :title => attachment[:title],
             :source => attachment[:source],
             :type => attachment[:type],
+            :size => attachment[:size],
         }
         if step.nil?
           self.suites[suite][:tests][test][:attachments] << attach
@@ -112,28 +113,40 @@ module AllureRSpec
       def each_suite_build(&block)
         suites_xml = []
         self.suites.each do |suite_title, suite|
-          builder = Nokogiri::XML::Builder.new do
-            send "test-suite", :start => suite[:start] || 0, :stop => suite[:stop] || 0 do
-              title suite_title
-              suite[:tests].each do |test_title, test|
-                send "test-cases", :start => test[:start] || 0, :stop => test[:stop] || 0, :status => test[:status], :severity => test[:severity] do
-                  title test_title
-                  unless test[:failure].nil?
-                    failure do
-                      message test[:failure][:message]
-                      send "stack-trace", test[:failure][:stacktrace]
-                    end
-                  end
-                  test[:steps].each do |step_title, step_obj|
-                    steps(:start => step_obj[:start] || 0, :stop => step_obj[:stop] || 0, :status => step_obj[:status]) do
-                      title step_title
-                      step_obj[:attachments].each do |attach|
-                        attachment :source => attach[:source], :title => attach[:title], :type => attach[:type]
+          builder = Nokogiri::XML::Builder.new do |xml|
+            xml.send "ns2:test-suite", :start => suite[:start] || 0, :stop => suite[:stop] || 0, 'xmlns' => '', "xmlns:ns2" => "urn:model.allure.qatools.yandex.ru" do
+              xml.send "name", suite_title
+              xml.send "test-cases" do
+                suite[:tests].each do |test_title, test|
+                  xml.send "test-case", :start => test[:start] || 0, :stop => test[:stop] || 0, :status => test[:status] do
+                    xml.send "name", test_title
+                    unless test[:failure].nil?
+                      xml.failure do
+                        xml.message test[:failure][:message]
+                        xml.send "stack-trace", test[:failure][:stacktrace]
                       end
                     end
-                  end
-                  test[:attachments].each do |attach|
-                    attachment :source => attach[:source], :title => attach[:title], :type => attach[:type]
+                    xml.steps do
+                      test[:steps].each do |step_title, step_obj|
+                        xml.step(:start => step_obj[:start] || 0, :stop => step_obj[:stop] || 0, :status => step_obj[:status]) do
+                          xml.send "name", step_title
+                          xml.attachments do
+                            step_obj[:attachments].each do |attach|
+                              xml.attachment :source => attach[:source], :title => attach[:title], :size => attach[:size], :type => attach[:type]
+                            end
+                          end
+                        end
+                      end
+                    end
+                    xml.attachments do
+                      test[:attachments].each do |attach|
+                        xml.attachment :source => attach[:source], :title => attach[:title], :size => attach[:size], :type => attach[:type]
+                      end
+                    end
+                    xml.labels do
+                      xml.label :name => "severity", :value => test[:severity]
+                    end
+                    xml.parameters
                   end
                 end
               end

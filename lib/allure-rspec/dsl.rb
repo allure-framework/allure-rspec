@@ -1,3 +1,5 @@
+require 'digest'
+require 'mimemagic'
 module AllureRSpec
   module DSL
 
@@ -33,12 +35,20 @@ module AllureRSpec
 
     def attach_file(title, file)
       step = __current_step
+      dir = Pathname.new(AllureRSpec::Config.output_dir)
+      FileUtils.mkdir_p(dir)
+      file_extname = File.extname(file.path.downcase)
+      type = MimeMagic.by_path(file.path) || "text/plain"
+      attachment = dir.join("#{Digest::SHA256.file(file.path).hexdigest}-attachment#{(file_extname.empty?) ? '' : file_extname}")
+      FileUtils.cp(file.path, attachment)
       suite = self.example.metadata[:example_group][:description_args].first
       test = self.example.metadata[:description]
-      type = :other
-      file_extname = File.extname(file.path.downcase)
-      type = file_extname if ALLOWED_ATTACH_EXTS.include?(file_extname)
-      AllureRSpec::Builder.add_attachment(suite, test, {:type => type, :title => title, :source => file.path}, step)
+      AllureRSpec::Builder.add_attachment(suite, test, {
+          :type => type,
+          :title => title,
+          :source => attachment.basename,
+          :size => File.stat(attachment).size
+      }, step)
     end
   end
 end

@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rspec', '~> 2.13.0'
   s.add_dependency 'nokogiri', '~> 1.6.0'
   s.add_dependency 'uuid'
+  s.add_dependency 'mimemagic'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'

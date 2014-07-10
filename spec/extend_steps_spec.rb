@@ -9,13 +9,13 @@ describe AllureRSpec do
     end
 
     step "step2" do
-
+      attach_file "logo", File.new("logo.png")
       5.should be > 1
     end
 
     step "step3" do
 
-      0.should == 0
+      0.should == 1
     end
   end
 end

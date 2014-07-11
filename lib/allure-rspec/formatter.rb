@@ -54,7 +54,7 @@ module AllureRSpec
       AllureRSpec::Builder.each_suite_build do |suite, xml|
         dir = Pathname.new(AllureRSpec::Config.output_dir)
         FileUtils.mkdir_p(dir)
-        out_file = dir.join("#{UUID.new.generate}.xml")
+        out_file = dir.join("#{UUID.new.generate}-testsuite.xml")
         File.open(out_file, 'w+') do |file|
           file.write(xml)
         end

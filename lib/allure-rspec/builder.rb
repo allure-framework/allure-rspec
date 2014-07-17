@@ -61,7 +61,8 @@ module AllureRSpec
       end
 
       def escape(text)
-        REXML::Text.new(text, false, nil, false)
+        #REXML::Text.new(text, false, nil, false)
+        text
       end
 
       def start_step(suite, test, step, severity = :normal)

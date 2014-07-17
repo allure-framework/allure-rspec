@@ -47,8 +47,8 @@ module AllureRSpec
         end
         MUTEX.synchronize do
           puts "Stopping test #{suite}.#{test}"
-          self.suites[suite][:tests][test][:stop] = timestamp(result[:started_at])
-          self.suites[suite][:tests][test][:start] = timestamp(result[:finished_at])
+          self.suites[suite][:tests][test][:stop] = timestamp(result[:finished_at])
+          self.suites[suite][:tests][test][:start] = timestamp(result[:started_at])
           self.suites[suite][:tests][test][:status] = result[:status]
           if (result[:status].to_sym != :passed)
             self.suites[suite][:tests][test][:failure] = {

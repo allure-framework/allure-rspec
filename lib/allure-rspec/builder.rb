@@ -116,11 +116,13 @@ module AllureRSpec
         self.suites.each do |suite_title, suite|
           builder = Nokogiri::XML::Builder.new do |xml|
             xml.send "ns2:test-suite", :start => suite[:start] || 0, :stop => suite[:stop] || 0, 'xmlns' => '', "xmlns:ns2" => "urn:model.allure.qatools.yandex.ru" do
-              xml.send "name", suite_title
+              xml.send :name, suite_title
+              xml.send :title, suite_title
               xml.send "test-cases" do
                 suite[:tests].each do |test_title, test|
                   xml.send "test-case", :start => test[:start] || 0, :stop => test[:stop] || 0, :status => test[:status] do
-                    xml.send "name", test_title
+                    xml.send :name, test_title
+                    xml.send :title, test_title
                     unless test[:failure].nil?
                       xml.failure do
                         xml.message test[:failure][:message]
@@ -130,7 +132,8 @@ module AllureRSpec
                     xml.steps do
                       test[:steps].each do |step_title, step_obj|
                         xml.step(:start => step_obj[:start] || 0, :stop => step_obj[:stop] || 0, :status => step_obj[:status]) do
-                          xml.send "name", step_title
+                          xml.send :name, step_title
+                          xml.send :title, step_title
                           xml.attachments do
                             step_obj[:attachments].each do |attach|
                               xml.attachment :source => attach[:source], :title => attach[:title], :size => attach[:size], :type => attach[:type]

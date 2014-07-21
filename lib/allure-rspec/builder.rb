@@ -52,7 +52,7 @@ module AllureRSpec
           self.suites[suite][:tests][test][:status] = result[:status]
           if (result[:status].to_sym != :passed)
             self.suites[suite][:tests][test][:failure] = {
-                :stacktrace => escape((result[:caller] || []).map { |s| s.to_s }.join("\r\n")),
+                :stacktrace => escape(((result[:exception] && result[:exception].backtrace) || []).map { |s| s.to_s }.join("\r\n")),
                 :message => escape(result[:exception].to_s),
             }
           end

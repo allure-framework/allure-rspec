@@ -10,7 +10,10 @@ module AllureRSpec
       AllureRSpec::Builder.stop_test(
           example.metadata[:example_group][:description_args].first,
           example.metadata[:description],
-          example.metadata[:execution_result].merge(:caller => example.metadata[:caller])
+          example.metadata[:execution_result].merge(
+              :caller => example.metadata[:caller],
+              :exception => example.metadata[:execution_result][:exception]
+          )
       )
       super
     end

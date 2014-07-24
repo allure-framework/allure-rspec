@@ -7,7 +7,7 @@ module AllureRSpec
       @@__mutex ||= Mutex.new
     end
 
-    def __current_step
+    def current_step
       if defined? @@__current_step
         @@__current_step
       else
@@ -18,8 +18,8 @@ module AllureRSpec
     def __with_step(step, &block)
       __mutex.synchronize do
         begin
-          Config.rspec.send :run_hook, :before, :step, example
           @@__current_step = step
+          Config.rspec.send :run_hook, :before, :step, example
           yield
         ensure
           Config.rspec.send :run_hook, :after, :step, example
@@ -37,7 +37,7 @@ module AllureRSpec
     end
 
     def attach_file(title, file)
-      step = __current_step
+      step = current_step
       dir = Pathname.new(AllureRSpec::Config.output_dir)
       FileUtils.mkdir_p(dir)
       file_extname = File.extname(file.path.downcase)

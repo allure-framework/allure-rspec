@@ -2,6 +2,39 @@ require 'spec_helper'
 require 'tempfile'
 
 describe AllureRSpec do
+
+  before(:suite) do
+    puts "before suite"
+  end
+
+  before(:all) do
+    puts "before all"
+  end
+
+  before(:step) do
+    puts "before step"
+  end
+
+  before(:each) do
+    puts "before each"
+  end
+
+  after(:step) do
+    puts "after step"
+  end
+
+  after(:each) do
+    puts "after each"
+  end
+
+  after(:suite) do
+    puts "after suite"
+  end
+
+  after(:all) do
+    puts "after all"
+  end
+
   it "should build" do
     attach_file "test-file1", Tempfile.new("test")
     step "step1" do

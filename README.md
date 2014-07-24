@@ -4,6 +4,7 @@ Adaptor to use the Allure framework along with the RSpec
 
 ## What's new
 
+* *0.4.1* - Support for before/after(:step) hooks.
 * *0.3.1* - Allure 1.4.0 format support.
 
 ## Setup
@@ -37,6 +38,10 @@ your current directory.
 
 ```ruby
 describe MySpec do
+
+  before(:step) do |s|
+    puts "Before step #{s.current_step}"
+  end
 
   it "should be steps enabled" do
 

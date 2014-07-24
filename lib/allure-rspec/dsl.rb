@@ -3,8 +3,6 @@ require 'mimemagic'
 module AllureRSpec
   module DSL
 
-    ALLOWED_ATTACH_EXTS = %w[txt html xml png jpg json]
-
     def __mutex
       @@__mutex ||= Mutex.new
     end
@@ -19,9 +17,14 @@ module AllureRSpec
 
     def __with_step(step, &block)
       __mutex.synchronize do
-        @@__current_step = step
-        yield
-        @@__current_step = nil
+        begin
+          Config.rspec.send :run_hook, :before, :step, example
+          @@__current_step = step
+          yield
+        ensure
+          Config.rspec.send :run_hook, :after, :step, example
+          @@__current_step = nil
+        end
       end
     end
 

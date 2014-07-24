@@ -11,16 +11,16 @@ describe AllureRSpec do
     puts "before all"
   end
 
-  before(:step) do
-    puts "before step"
+  before(:step) do |s|
+    puts "before step #{s.current_step}"
   end
 
   before(:each) do
     puts "before each"
   end
 
-  after(:step) do
-    puts "after step"
+  after(:step) do |s|
+    puts "after step #{s.current_step}"
   end
 
   after(:each) do

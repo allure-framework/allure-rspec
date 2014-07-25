@@ -2,7 +2,6 @@ require 'digest'
 require 'mimemagic'
 module AllureRSpec
   module DSL
-
     def __mutex
       @@__mutex ||= Mutex.new
     end
@@ -19,10 +18,10 @@ module AllureRSpec
       __mutex.synchronize do
         begin
           @@__current_step = step
-          Config.rspec.send :run_hook, :before, :step, example
+          AllureRSpec.context.rspec.send :run_hook, :before, :step, example
           yield
         ensure
-          Config.rspec.send :run_hook, :after, :step, example
+          AllureRSpec.context.rspec.send :run_hook, :after, :step, example
           @@__current_step = nil
         end
       end

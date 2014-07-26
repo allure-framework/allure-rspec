@@ -11,17 +11,26 @@ module AllureRSpec
   module Config
     class << self
       attr_accessor :output_dir
-      attr_accessor :rspec
 
       DEFAULT_OUTPUT_DIR = 'allure/data'
 
       def output_dir
         @output_dir || DEFAULT_OUTPUT_DIR
       end
+    end
+  end
 
-      def rspec
-        @rspec
-      end
+  class Context
+    attr_accessor :rspec
+
+    def rspec
+      @rspec
+    end
+  end
+
+  class << self
+    def context
+      @context ||= Context.new
     end
   end
 

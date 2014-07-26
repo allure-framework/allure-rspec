@@ -13,28 +13,29 @@ module AllureRSpec
         }
       end
 
-      def start_suite(title)
+      def start_suite(title, labels = [:severity => :normal])
         init_suites
         MUTEX.synchronize do
-          puts "Starting suite #{title}"
+          puts "Starting case_or_suite #{title} with labels #{labels}"
           self.suites[title] = {
               :title => title,
               :start => timestamp,
               :tests => {},
+              :labels => labels
           }
         end
       end
 
-      def start_test(suite, test, severity = :normal)
+      def start_test(suite, test, labels = [:severity => :normal])
         MUTEX.synchronize do
-          puts "Starting test #{suite}.#{test}"
+          puts "Starting test #{suite}.#{test} with labels #{labels}"
           self.suites[suite][:tests][test] = {
               :title => test,
               :start => timestamp,
-              :severity => severity,
               :failure => nil,
               :steps => {},
-              :attachments => []
+              :attachments => [],
+              :labels => labels,
           }
         end
       end
@@ -65,13 +66,12 @@ module AllureRSpec
         text
       end
 
-      def start_step(suite, test, step, severity = :normal)
+      def start_step(suite, test, step)
         MUTEX.synchronize do
           puts "Starting step #{suite}.#{test}.#{step}"
           self.suites[suite][:tests][test][:steps][step] = {
               :title => step,
               :start => timestamp,
-              :severity => severity || :normal,
               :attachments => []
           }
         end
@@ -102,7 +102,7 @@ module AllureRSpec
       def stop_suite(title)
         init_suites
         MUTEX.synchronize do
-          puts "Stopping suite #{title}"
+          puts "Stopping case_or_suite #{title}"
           self.suites[title][:stop] = timestamp
         end
       end
@@ -134,26 +134,17 @@ module AllureRSpec
                         xml.step(:start => step_obj[:start] || 0, :stop => step_obj[:stop] || 0, :status => step_obj[:status]) do
                           xml.send :name, step_title
                           xml.send :title, step_title
-                          xml.attachments do
-                            step_obj[:attachments].each do |attach|
-                              xml.attachment :source => attach[:source], :title => attach[:title], :size => attach[:size], :type => attach[:type]
-                            end
-                          end
+                          xml_attachments(xml, step_obj[:attachments])
                         end
                       end
                     end
-                    xml.attachments do
-                      test[:attachments].each do |attach|
-                        xml.attachment :source => attach[:source], :title => attach[:title], :size => attach[:size], :type => attach[:type]
-                      end
-                    end
-                    xml.labels do
-                      xml.label :name => "severity", :value => test[:severity]
-                    end
+                    xml_attachments(xml, test[:attachments])
+                    xml_labels(xml, suite[:labels].merge(test[:labels]))
                     xml.parameters
                   end
                 end
               end
+              xml_labels(xml, suite[:labels])
             end
           end
           xml = builder.to_xml
@@ -161,6 +152,30 @@ module AllureRSpec
           suites_xml << xml
         end
         suites_xml
+      end
+
+      private
+
+      def xml_attachments(xml, attachments)
+        xml.attachments do
+          attachments.each do |attach|
+            xml.attachment :source => attach[:source], :title => attach[:title], :size => attach[:size], :type => attach[:type]
+          end
+        end
+      end
+
+      def xml_labels(xml, labels)
+        xml.labels do
+          labels.each do |name, value|
+            if value.is_a?(Array)
+              value.each do |v|
+                xml.label :name => name, :value => v
+              end
+            else
+              xml.label :name => name, :value => value
+            end
+          end
+        end
       end
     end
   end

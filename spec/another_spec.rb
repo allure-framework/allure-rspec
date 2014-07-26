@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'tempfile'
 
-describe "Some another spec" do
+describe "Some another spec", :feature => ["Some Feature"], :severity => :normal do
 
   before(:each) do
     puts "before each"
@@ -11,7 +11,7 @@ describe "Some another spec" do
     puts "after each"
   end
 
-  it "10 cannot be greater than 19" do
+  it "10 cannot be greater than 19", :story => ["Some story"]  do
     10.should > 19
   end
 

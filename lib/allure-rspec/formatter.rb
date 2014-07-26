@@ -6,6 +6,8 @@ module AllureRSpec
 
   class Formatter < RSpec::Core::Formatters::BaseFormatter
 
+    ALLOWED_LABELS = [:feature, :story, :severity, :language, :framework]
+
     def example_failed(example)
       AllureRSpec::Builder.stop_test(
           example.metadata[:example_group][:description_args].first,
@@ -24,7 +26,7 @@ module AllureRSpec
     end
 
     def example_group_started(group)
-      AllureRSpec::Builder.start_suite(group.metadata[:example_group][:description_args].first)
+      AllureRSpec::Builder.start_suite(group.metadata[:example_group][:description_args].first, labels(group))
       super
     end
 
@@ -44,7 +46,7 @@ module AllureRSpec
     def example_started(example)
       suite = example.metadata[:example_group][:description_args].first
       test = example.metadata[:description]
-      AllureRSpec::Builder.start_test(suite, test)
+      AllureRSpec::Builder.start_test(suite, test, labels(example))
       super
     end
 
@@ -62,14 +64,23 @@ module AllureRSpec
           file.write(xml)
         end
 
-        #xsd = Nokogiri::XML::Schema(File.read("allure-model.xsd"))
-        #doc = Nokogiri::XML(File.read(out_file))
-        #
-        #xsd.validate(doc).each do |error|
-        #  puts error.message
-        #end
+        xsd = Nokogiri::XML::Schema(File.read(Pathname.new(File.dirname(__FILE__)).join("../../allure-model.xsd")))
+        doc = Nokogiri::XML(File.read(out_file))
+
+        xsd.validate(doc).each do |error|
+          $stderr.puts error.message
+        end
       end
       super
+    end
+
+    private
+
+    def labels(example_or_group)
+      ALLOWED_LABELS.
+          map { |label| [label, example_or_group.metadata[label]] }.
+          find_all { |value| !value[1].nil? }.
+          inject({}) { |res, value| res.merge(value[0] => value[1]) }
     end
 
   end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'tempfile'
 
-describe AllureRSpec do
+describe AllureRSpec, :feature => "Basics" do
 
   before(:suite) do
     puts "before suite"
@@ -35,7 +35,7 @@ describe AllureRSpec do
     puts "after all"
   end
 
-  it "should build" do
+  it "should build", :story => "Main story" do
     attach_file "test-file1", Tempfile.new("test")
     step "step1" do
       attach_file "test-file2", Tempfile.new("test")

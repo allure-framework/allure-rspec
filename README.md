@@ -4,6 +4,7 @@ Adaptor to use the Allure framework along with the RSpec
 
 ## What's new
 
+* *0.4.2* - Support for labels (feature,story,severity,language,framework).
 * *0.4.1* - Support for before/after(:step) hooks.
 * *0.3.1* - Allure 1.4.0 format support.
 
@@ -37,13 +38,17 @@ your current directory.
 ## Usage examples
 
 ```ruby
-describe MySpec do
+describe MySpec, :feature => "Some feature", :severity => :normal do
 
   before(:step) do |s|
     puts "Before step #{s.current_step}"
   end
 
-  it "should be steps enabled" do
+  it "should be critical", :story => "First story", :severity => :critical do
+    "string".should == "string"
+  end
+
+  it "should be steps enabled", :story => ["First story", "Second story"] do
 
     step "step1" do
       attach_file "screenshot1", take_screenshot_as_file

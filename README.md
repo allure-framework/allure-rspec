@@ -4,6 +4,7 @@ Adaptor to use the Allure framework along with the RSpec
 
 ## What's new
 
+* *0.5.1* - Migrating to allure-ruby-api.
 * *0.4.2* - Support for labels (feature,story,severity,language,framework).
 * *0.4.1* - Support for before/after(:step) hooks.
 * *0.3.1* - Allure 1.4.0 format support.
@@ -31,7 +32,8 @@ your current directory.
 
 ```ruby
     AllureRSpec.configure do |c|
-      c.output_dir = "/whatever/you/like"
+      c.output_dir = "/whatever/you/like" # default: allure/data
+      c.clean_dir = false # clean the output directory first? (default: true)
     end
 ```
 

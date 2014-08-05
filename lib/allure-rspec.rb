@@ -42,7 +42,7 @@ module AllureRSpec
   class << self
     def configure(&block)
       yield Config
-      AllureRubyApi.configure {|c|
+      AllureRubyAdaptorApi.configure {|c|
         c.output_dir = Config.output_dir
       }
     end

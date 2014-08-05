@@ -8,7 +8,7 @@ module AllureRSpec
     ALLOWED_LABELS = [:feature, :story, :severity, :language, :framework]
 
     def example_failed(example)
-      AllureRubyApi::Builder.stop_test(
+      AllureRubyAdaptorApi::Builder.stop_test(
           example.metadata[:example_group][:description_args].first,
           example.metadata[:description],
           example.metadata[:execution_result].merge(
@@ -20,17 +20,17 @@ module AllureRSpec
     end
 
     def example_group_finished(group)
-      AllureRubyApi::Builder.stop_suite(group.metadata[:example_group][:description_args].first)
+      AllureRubyAdaptorApi::Builder.stop_suite(group.metadata[:example_group][:description_args].first)
       super
     end
 
     def example_group_started(group)
-      AllureRubyApi::Builder.start_suite(group.metadata[:example_group][:description_args].first, labels(group))
+      AllureRubyAdaptorApi::Builder.start_suite(group.metadata[:example_group][:description_args].first, labels(group))
       super
     end
 
     def example_passed(example)
-      AllureRubyApi::Builder.stop_test(
+      AllureRubyAdaptorApi::Builder.stop_test(
           example.metadata[:example_group][:description_args].first,
           example.metadata[:description],
           example.metadata[:execution_result].merge(:caller => example.metadata[:caller])
@@ -45,7 +45,7 @@ module AllureRSpec
     def example_started(example)
       suite = example.metadata[:example_group][:description_args].first
       test = example.metadata[:description]
-      AllureRubyApi::Builder.start_test(suite, test, labels(example))
+      AllureRubyAdaptorApi::Builder.start_test(suite, test, labels(example))
       super
     end
 
@@ -59,7 +59,7 @@ module AllureRSpec
     end
 
     def stop
-      AllureRubyApi::Builder.build!
+      AllureRubyAdaptorApi::Builder.build!
       super
     end
 

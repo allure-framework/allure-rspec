@@ -1,4 +1,4 @@
-require 'allure-ruby-api'
+require 'allure-ruby-adaptor-api'
 require 'allure-rspec/version'
 require 'allure-rspec/formatter'
 require 'allure-rspec/adaptor'
@@ -42,7 +42,7 @@ module AllureRSpec
   class << self
     def configure(&block)
       yield Config
-      AllureRubyApi.configure {|c|
+      AllureRubyAdaptorApi.configure {|c|
         c.output_dir = Config.output_dir
       }
     end

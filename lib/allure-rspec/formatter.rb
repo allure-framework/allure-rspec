@@ -52,6 +52,7 @@ module AllureRSpec
     def start(example_count)
       dir = Pathname.new(AllureRSpec::Config.output_dir)
       if AllureRSpec::Config.clean_dir?
+        puts "Cleaning output directory '#{dir}'..."
         FileUtils.rm_rf(dir)
       end
       FileUtils.mkdir_p(dir)

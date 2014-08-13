@@ -20,7 +20,7 @@ module AllureRSpec
       end
 
       def clean_dir?
-        @clean_dir || true
+        @clean_dir.nil? ? true : @clean_dir
       end
     end
   end

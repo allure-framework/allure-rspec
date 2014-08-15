@@ -1,6 +1,6 @@
 # Allure RSpec Adaptor
 
-Adaptor to use the Allure framework along with the RSpec
+Adaptor to use the Allure framework along with the RSpec. See [an example](https://github.com/allure-examples/allure-rspec-example) project to take a quick tour.
 
 ## What's new
 

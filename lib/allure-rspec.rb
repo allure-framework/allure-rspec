@@ -6,8 +6,6 @@ require 'allure-rspec/dsl'
 require 'allure-rspec/hooks'
 
 module AllureRSpec
-  include AllureRSpec::DSL
-
   module Config
     class << self
       attr_accessor :output_dir
@@ -42,7 +40,7 @@ module AllureRSpec
   class << self
     def configure(&block)
       yield Config
-      AllureRubyAdaptorApi.configure {|c|
+      AllureRubyAdaptorApi.configure { |c|
         c.output_dir = Config.output_dir
       }
     end

@@ -35,20 +35,19 @@ describe AllureRSpec, :feature => "Basics" do
     puts "after all"
   end
 
-  it "should build", :story => "Main story" do
-    attach_file "test-file1", Tempfile.new("test")
-    step "step1" do
-      attach_file "test-file2", Tempfile.new("test")
+  it "should build", :story => "Main story" do |ex|
+    ex.attach_file "test-file1", Tempfile.new("test")
+    ex.step "step1" do |step|
+      step.attach_file "test-file2", Tempfile.new("test")
     end
 
-    step "step2" do
-      attach_file "logo", File.new("logo.png")
-      5.should be > 1
+    ex.step "step2" do |step|
+      step.attach_file "logo", File.new("logo.png")
+      expect(5).to be > 1
     end
 
-    step "step3" do
-
-      0.should == 1
+    ex.step "step3" do
+      expect(0).to be eql(1)
     end
   end
 end

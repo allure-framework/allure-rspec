@@ -1,5 +1,5 @@
 module AllureRSpec # :nodoc:
   module Version # :nodoc:
-    STRING = '0.5.3'
+    STRING = '0.6.1'
   end
 end

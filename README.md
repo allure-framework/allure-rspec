@@ -4,6 +4,7 @@ Adaptor to use the Allure framework along with the RSpec. See [an example](https
 
 ## What's new
 
+* *0.6.1* - Upgraded to RSpec3. Not compatible with RSpec2 anymore.
 * *0.5.1* - Migrating to allure-ruby-api.
 * *0.4.2* - Support for labels (feature,story,severity,language,framework).
 * *0.4.1* - Support for before/after(:step) hooks.

@@ -12,7 +12,9 @@ Adaptor to use the Allure framework along with the RSpec. See [an example](https
 
 ## Setup
 
-Add the dependency to your Gemfile
+Add the dependency to your Gemfile. Choose the version carefully:
+* 0.5.x - for RSpec2.
+* 0.6.x - for RSpec3.
 
 ```ruby
  gem 'allure-rspec'

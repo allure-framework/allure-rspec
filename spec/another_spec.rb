@@ -12,10 +12,10 @@ describe "Some another spec", :feature => ["Some Feature"], :severity => :normal
   end
 
   it "10 cannot be greater than 19", :story => ["Some story"]  do
-    10.should > 19
+    expect(10).to be > 19
   end
 
   it "4 must not be equal to 5" do
-    5.should == 4
+    expect(5).to be eql(4)
   end
 end

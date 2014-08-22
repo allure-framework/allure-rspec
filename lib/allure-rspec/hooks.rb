@@ -7,47 +7,53 @@ module AllureRSpec
 
     module OverrideHooksMethods
       include RSpec::Core::Hooks
-      alias_method :old_extract_scope_from, :extract_scope_from
-      alias_method :old_hooks, :hooks
-      alias_method :old_find_hook, :find_hook
 
-      SCOPES = [:each, :all, :suite, :step]
+      alias_method :old_hooks, :hooks
 
       def hooks
         if @__hooks.nil?
-          @__hooks ||= old_hooks
+          old  = old_hooks
+          @__hooks ||= OverridenHookCollections.new(old.instance_variable_get(:@owner), old.instance_variable_get(:@data))
           [:before, :after].each { |scope|
             @__hooks[scope][:step] = HookCollection.new
           }
         end
         @__hooks
       end
+      private
 
-      def before_step_hooks_for(example)
-        HookCollection.new(parent_groups.reverse.map { |a| a.hooks[:before][:step] }.flatten).for(example)
-      end
+      class OverridenHookCollections < RSpec::Core::Hooks::HookCollections
+        private
 
-      def after_step_hooks_for(example)
-        HookCollection.new(parent_groups.map { |a| a.hooks[:after][:step] }.flatten).for(example)
-      end
+        SCOPES = [:each, :all, :suite, :step]
 
-      def find_hook(hook, scope, example_or_group, initial_procsy)
-        case [hook, scope]
-          when [:before, :step]
-            before_step_hooks_for(example_or_group)
-          when [:after, :step]
-            after_step_hooks_for(example_or_group)
-          else
-            old_find_hook(hook, scope, example_or_group, initial_procsy)
+        def before_step_hooks_for(example)
+          RSpec::Core::Hooks::HookCollection.new(RSpec::Core::FlatMap.flat_map(@owner.parent_groups.reverse) do |a|
+            a.hooks[:before][:step]
+          end).for(example)
         end
-      end
 
-      def extract_scope_from(args)
-        if SCOPES.include?(args.first)
-          args.shift
-        else
-          old_extract_scope_from(args)
+        def after_step_hooks_for(example)
+          RSpec::Core::Hooks::HookCollection.new(RSpec::Core::FlatMap.flat_map(@owner.parent_groups) do |a|
+            a.hooks[:after][:step]
+          end).for(example)
         end
+
+        def find_hook(hook, scope, example_or_group, initial_procsy)
+          case [hook, scope]
+            when [:before, :step]
+              before_step_hooks_for(example_or_group)
+            when [:after, :step]
+              after_step_hooks_for(example_or_group)
+            else
+              super(hook, scope, example_or_group, initial_procsy)
+          end
+        end
+
+        def known_scope?(scope)
+          SCOPES.include?(scope) || super(scope)
+        end
+
       end
     end
   end

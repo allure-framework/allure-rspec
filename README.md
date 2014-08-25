@@ -53,21 +53,21 @@ describe MySpec, :feature => "Some feature", :severity => :normal do
     "string".should == "string"
   end
 
-  it "should be steps enabled", :story => ["First story", "Second story"] do
+  it "should be steps enabled", :story => ["First story", "Second story"] do |e|
 
-    step "step1" do
-      attach_file "screenshot1", take_screenshot_as_file
+    e.step "step1" do |s|
+      s.attach_file "screenshot1", take_screenshot_as_file
     end
 
-    step "step2" do
+    e.step "step2" do
       5.should be > 0
     end
 
-    step "step3" do
+    e.step "step3" do
       0.should == 0
     end
 
-    attach_file "screenshot2", take_screenshot_as_file
+    e.attach_file "screenshot2", take_screenshot_as_file
   end
 end
 ```

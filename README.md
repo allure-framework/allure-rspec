@@ -1,9 +1,10 @@
 # Allure RSpec Adaptor
 
-Adaptor to use the Allure framework along with the RSpec
+Adaptor to use the Allure framework along with the RSpec. See [an example](https://github.com/allure-examples/allure-rspec-example) project to take a quick tour.
 
 ## What's new
 
+* *0.6.1* - Upgraded to RSpec3. Not compatible with RSpec2 anymore.
 * *0.5.1* - Migrating to allure-ruby-api.
 * *0.4.2* - Support for labels (feature,story,severity,language,framework).
 * *0.4.1* - Support for before/after(:step) hooks.
@@ -11,7 +12,9 @@ Adaptor to use the Allure framework along with the RSpec
 
 ## Setup
 
-Add the dependency to your Gemfile
+Add the dependency to your Gemfile. Choose the version carefully:
+* 0.5.x - for RSpec2.
+* 0.6.x - for RSpec3.
 
 ```ruby
  gem 'allure-rspec'
@@ -50,21 +53,21 @@ describe MySpec, :feature => "Some feature", :severity => :normal do
     "string".should == "string"
   end
 
-  it "should be steps enabled", :story => ["First story", "Second story"] do
+  it "should be steps enabled", :story => ["First story", "Second story"] do |e|
 
-    step "step1" do
-      attach_file "screenshot1", take_screenshot_as_file
+    e.step "step1" do |s|
+      s.attach_file "screenshot1", take_screenshot_as_file
     end
 
-    step "step2" do
+    e.step "step2" do
       5.should be > 0
     end
 
-    step "step3" do
+    e.step "step3" do
       0.should == 0
     end
 
-    attach_file "screenshot2", take_screenshot_as_file
+    e.attach_file "screenshot2", take_screenshot_as_file
   end
 end
 ```

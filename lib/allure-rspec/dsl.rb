@@ -15,9 +15,14 @@ module AllureRSpec
       def step(step, &block)
         suite = metadata[:example_group][:description_args].first.to_s
         test = metadata[:description].to_s
-        AllureRubyAdaptorApi::Builder.start_step(suite, test, step)
-        __with_step step, &block
-        AllureRubyAdaptorApi::Builder.stop_step(suite, test, step)
+        begin
+          AllureRubyAdaptorApi::Builder.start_step(suite, test, step)
+          __with_step step, &block
+          AllureRubyAdaptorApi::Builder.stop_step(suite, test, step)
+        rescue Exception => e
+          AllureRubyAdaptorApi::Builder.stop_step(suite, test, step, :failed)
+          raise e
+        end
       end
 
       def attach_file(title, file, opts = {})

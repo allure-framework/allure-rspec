@@ -6,6 +6,7 @@
 *.ear
 *.gem
 
+allure-report
 target
 allure
 .idea

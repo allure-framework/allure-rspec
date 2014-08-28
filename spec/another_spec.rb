@@ -3,12 +3,12 @@ require 'tempfile'
 
 describe "Some another spec", :feature => ["Some Feature"], :severity => :normal do
 
-  before(:each) do
-    puts "before each"
+  before(:suite) do
+    puts "before suite"
   end
 
-  after(:each) do
-    puts "after each"
+  after(:suite) do
+    puts "after suite"
   end
 
   it "10 cannot be greater than 19", :story => ["Some story"]  do

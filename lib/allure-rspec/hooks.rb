@@ -12,7 +12,7 @@ module AllureRSpec
 
       def hooks
         if @__hooks.nil?
-          old  = old_hooks
+          old = old_hooks
           @__hooks ||= OverridenHookCollections.new(old.instance_variable_get(:@owner), old.instance_variable_get(:@data))
           [:before, :after].each { |scope|
             @__hooks[scope][:step] = HookCollection.new
@@ -20,12 +20,13 @@ module AllureRSpec
         end
         @__hooks
       end
+
       private
 
       class OverridenHookCollections < RSpec::Core::Hooks::HookCollections
         private
 
-        SCOPES = [:each, :all, :suite, :step]
+        SCOPES = [:example, :context, :suite, :step]
 
         def before_step_hooks_for(example)
           RSpec::Core::Hooks::HookCollection.new(RSpec::Core::FlatMap.flat_map(@owner.parent_groups.reverse) do |a|

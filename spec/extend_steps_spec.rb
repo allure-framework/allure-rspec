@@ -7,31 +7,31 @@ describe AllureRSpec, :feature => "Basics" do
     puts "before suite"
   end
 
-  before(:all) do
-    puts "before all"
+  before(:context) do
+    puts "before context"
   end
 
   before(:step) do |s|
     puts "before step #{s.current_step}"
   end
 
-  before(:each) do
-    puts "before each"
+  before(:example) do
+    puts "before example"
   end
 
   after(:step) do |s|
     puts "after step #{s.current_step}"
   end
 
-  after(:each) do
-    puts "after each"
+  after(:example) do
+    puts "after example"
   end
 
   after(:suite) do
     puts "after suite"
   end
 
-  after(:all) do
+  after(:context) do
     puts "after all"
   end
 

@@ -34,8 +34,8 @@ module AllureRSpec
     def example_passed(example)
       res = example.example.execution_result
       AllureRubyAdaptorApi::Builder.stop_test(
-          example.example_group.description,
-          example.description.to_s,
+          example.example.example_group.description,
+          example.example.description.to_s,
           {
               :status => res.status,
               :finished_at => res.finished_at,

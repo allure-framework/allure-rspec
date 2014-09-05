@@ -9,48 +9,32 @@ module AllureRSpec
                      :example_failed, :example_passed, :example_pending, :start, :stop]
     ALLOWED_LABELS = [:feature, :story, :severity, :language, :framework]
 
-    def example_failed(example)
-      res = example.example.execution_result
-      AllureRubyAdaptorApi::Builder.stop_test(
-          example.example.example_group.description,
-          example.example.description.to_s,
-          {
-              :exception => res.exception,
-              :status => res.status,
-              :finished_at => res.finished_at,
-              :started_at => res.started_at
-          }
-      )
+    def example_failed(notification)
+      res = notification.example.execution_result
+      status = res.exception.is_a?(RSpec::Expectations::ExpectationNotMetError) ? :failed : :broken
+      stop_test(notification.example, :exception => res.exception, :status => status)
     end
 
-    def example_group_finished(group)
-      AllureRubyAdaptorApi::Builder.stop_suite(group.group.description.to_s)
+    def example_group_finished(notification)
+      AllureRubyAdaptorApi::Builder.stop_suite(notification.group.description.to_s)
     end
 
-    def example_group_started(group)
-      AllureRubyAdaptorApi::Builder.start_suite(group.group.description.to_s, labels(group))
+    def example_group_started(notification)
+      AllureRubyAdaptorApi::Builder.start_suite(notification.group.description.to_s, labels(notification))
     end
 
-    def example_passed(example)
-      res = example.example.execution_result
-      AllureRubyAdaptorApi::Builder.stop_test(
-          example.example.example_group.description,
-          example.example.description.to_s,
-          {
-              :status => res.status,
-              :finished_at => res.finished_at,
-              :started_at => res.started_at
-          }
-      )
+    def example_passed(notification)
+      stop_test(notification.example)
     end
 
-    def example_pending(example)
+    def example_pending(notification)
+      stop_test(notification.example)
     end
 
-    def example_started(example)
-      suite = example.example.example_group.description
-      test = example.example.description.to_s
-      AllureRubyAdaptorApi::Builder.start_test(suite, test, labels(example))
+    def example_started(notification)
+      suite = notification.example.example_group.description
+      test = notification.example.description.to_s
+      AllureRubyAdaptorApi::Builder.start_test(suite, test, labels(notification))
     end
 
     def start(example_count)
@@ -67,6 +51,19 @@ module AllureRSpec
     end
 
     private
+
+    def stop_test(example, opts = {})
+      res = example.execution_result
+      AllureRubyAdaptorApi::Builder.stop_test(
+          example.example_group.description,
+          example.description.to_s,
+          {
+              :status => res.status,
+              :finished_at => res.finished_at,
+              :started_at => res.started_at
+          }.merge(opts)
+      )
+    end
 
     def metadata(example_or_group)
       (example_or_group.respond_to? :group) ?

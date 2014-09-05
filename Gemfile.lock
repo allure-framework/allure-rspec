@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    allure-rspec (0.6.3)
+    allure-rspec (0.6.4)
       allure-ruby-adaptor-api (= 0.6.3)
       rspec (= 3.0.0)
 

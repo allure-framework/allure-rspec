@@ -29,8 +29,8 @@ And then include it in your spec_helper.rb:
 
 ## Advanced options
 
-You can specify the directory where the Allure test results will appear. By default it would be 'allure/data' within
-your current directory.
+You can specify the directory where the Allure test results will appear. By default it would be 'gen/allure-results'
+within your current directory.
 
 ```ruby
     AllureRSpec.configure do |c|

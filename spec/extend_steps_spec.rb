@@ -51,6 +51,14 @@ describe AllureRSpec, :feature => "Basics" do
     end
   end
 
+  it "should be failed example" do
+    fail_spec "Failure"
+  end
+
+  def fail_spec(desc)
+    raise RSpec::Expectations::ExpectationNotMetError.new(desc)
+  end
+
   it "should raise exception" do |e|
 
     e.step "step1" do

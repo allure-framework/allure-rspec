@@ -13,8 +13,8 @@ module AllureRSpec
       end
 
       def step(step, &block)
-        suite = description(metadata[:example_group])
-        test = description(metadata)
+        suite = __description(metadata[:example_group])
+        test = __description(metadata)
         begin
           AllureRubyAdaptorApi::Builder.start_step(suite, test, step)
           __with_step step, &block
@@ -27,15 +27,15 @@ module AllureRSpec
 
 
       def attach_file(title, file, opts = {})
-        suite = description(metadata[:example_group])
-        test = description(metadata)
+        suite = __description(metadata[:example_group])
+        test = __description(metadata)
         step = current_step
         AllureRubyAdaptorApi::Builder.add_attachment suite, test, opts.merge(:title => title, :file => file, :step => step)
       end
 
       private
 
-      def description(data)
+      def __description(data)
         data[:full_description] || data[:description]
       end
 

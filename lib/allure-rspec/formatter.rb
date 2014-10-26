@@ -16,11 +16,11 @@ module AllureRSpec
     end
 
     def example_group_finished(notification)
-      AllureRubyAdaptorApi::Builder.stop_suite(notification.group.description.to_s)
+      AllureRubyAdaptorApi::Builder.stop_suite(description(notification.group).to_s)
     end
 
     def example_group_started(notification)
-      AllureRubyAdaptorApi::Builder.start_suite(notification.group.description.to_s, labels(notification))
+      AllureRubyAdaptorApi::Builder.start_suite(description(notification.group).to_s, labels(notification))
     end
 
     def example_passed(notification)
@@ -32,8 +32,8 @@ module AllureRSpec
     end
 
     def example_started(notification)
-      suite = notification.example.example_group.description
-      test = notification.example.description.to_s
+      suite = description(notification.example.example_group).to_s
+      test = description(notification.example).to_s
       AllureRubyAdaptorApi::Builder.start_test(suite, test, labels(notification))
     end
 
@@ -52,11 +52,17 @@ module AllureRSpec
 
     private
 
+    def description(data, attr = :full_description)
+      ((data.respond_to?(attr)) ?
+          data.send(attr) : data.metadata[attr]) ||
+          description(data, :description)
+    end
+
     def stop_test(example, opts = {})
       res = example.execution_result
       AllureRubyAdaptorApi::Builder.stop_test(
-          example.example_group.description,
-          example.description.to_s,
+          description(example.example_group).to_s,
+          description(example).to_s,
           {
               :status => res.status,
               :finished_at => res.finished_at,

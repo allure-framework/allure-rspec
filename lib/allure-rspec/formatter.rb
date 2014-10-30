@@ -94,13 +94,14 @@ module AllureRSpec
       is_group = group?(example_or_group)
       parent = metadata[:parent_example_group] || metadata[:example_group]
       if labels[:feature] === true
-        labels[:feature] = (!is_group && parent) ? parent[:description] : metadata[:description]
+        description = (!is_group && parent) ? parent[:description] : metadata[:description]
+        labels[:feature] = description
         if labels[:story] === true
           if parent
             grandparent = parent && parent[:parent_example_group]
             labels[:feature] = (!is_group && grandparent) ? grandparent[:description] : parent[:description]
           end
-          labels[:story] = (!is_group && parent) ? parent[:description] : metadata[:description]
+          labels[:story] = description
         end
       end
       labels

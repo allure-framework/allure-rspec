@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    allure-rspec (0.6.7)
-      allure-ruby-adaptor-api (= 0.6.4)
+    allure-rspec (0.6.8)
+      allure-ruby-adaptor-api (= 0.6.5)
       rspec (~> 3.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    allure-ruby-adaptor-api (0.6.4)
+    allure-ruby-adaptor-api (0.6.5)
       mimemagic
       nokogiri (~> 1.6.0)
       uuid
@@ -16,9 +16,9 @@ GEM
     macaddr (1.7.1)
       systemu (~> 2.6.2)
     mimemagic (0.2.1)
-    mini_portile (0.6.0)
-    nokogiri (1.6.3.1)
-      mini_portile (= 0.6.0)
+    mini_portile (0.6.2)
+    nokogiri (1.6.5)
+      mini_portile (~> 0.6.0)
     rake (10.3.2)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)

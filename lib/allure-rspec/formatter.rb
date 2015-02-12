@@ -72,16 +72,44 @@ module AllureRSpec
     end
 
     def metadata(example_or_group)
-      (example_or_group.respond_to? :group) ?
+      group?(example_or_group) ?
           example_or_group.group.metadata :
           example_or_group.example.metadata
     end
 
+    def group?(example_or_group)
+      (example_or_group.respond_to? :group)
+    end
+
     def labels(example_or_group)
-      ALLOWED_LABELS.
-          map { |label| [label, metadata(example_or_group)[label]] }.
+      labels = ALLOWED_LABELS.map { |label| [label, metadata(example_or_group)[label]] }.
           find_all { |value| !value[1].nil? }.
           inject({}) { |res, value| res.merge(value[0] => value[1]) }
+      detect_feature_story(labels, example_or_group)
+      labels
+    end
+
+    def method_or_key(metadata, key)
+      metadata.respond_to?(key) ? metadata.send(key) : metadata[key]
+    end
+
+    def detect_feature_story(labels, example_or_group)
+      metadata = metadata(example_or_group)
+      is_group = group?(example_or_group)
+      parent = (method_or_key(metadata, :parent_example_group))
+      if labels[:feature] === true
+        description = (!is_group && parent) ? method_or_key(parent, :description) : method_or_key(metadata, :description)
+        labels[:feature] = description
+        if labels[:story] === true
+          if parent
+            grandparent = parent && method_or_key(parent, :parent_example_group)
+            labels[:feature] = (!is_group && grandparent) ? method_or_key(grandparent, :description) :
+                method_or_key(parent, :description)
+          end
+          labels[:story] = description
+        end
+      end
+      labels
     end
 
   end

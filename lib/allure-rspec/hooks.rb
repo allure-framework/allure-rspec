@@ -11,45 +11,67 @@ module AllureRSpec
       alias_method :old_hooks, :hooks
 
       def hooks
-        if @__hooks.nil?
-          old = old_hooks
-          @__hooks ||= OverridenHookCollections.new(old.instance_variable_get(:@owner), old.instance_variable_get(:@data))
-          [:before, :after].each { |scope|
-            @__hooks[scope][:step] = HookCollection.new
-          }
-        end
-        @__hooks
+        @__hooks ||= OverridenHookCollections.new(self, RSpec::Core::FilterableItemRepository::UpdateOptimized)
       end
 
       private
 
       class OverridenHookCollections < RSpec::Core::Hooks::HookCollections
-        private
-
-        SCOPES = [:example, :context, :suite, :step]
-
-        def before_step_hooks_for(example)
-          RSpec::Core::Hooks::HookCollection.new(RSpec::Core::FlatMap.flat_map(@owner.parent_groups.reverse) do |a|
-            a.hooks[:before][:step]
-          end).for(example)
+        def initialize(*args)
+          super
+          @before_step_hooks = nil
+          @after_step_hooks = nil
         end
 
-        def after_step_hooks_for(example)
-          RSpec::Core::Hooks::HookCollection.new(RSpec::Core::FlatMap.flat_map(@owner.parent_groups) do |a|
-            a.hooks[:after][:step]
-          end).for(example)
-        end
 
-        def find_hook(hook, scope, example_or_group, initial_procsy)
-          case [hook, scope]
-            when [:before, :step]
-              before_step_hooks_for(example_or_group)
-            when [:after, :step]
-              after_step_hooks_for(example_or_group)
-            else
-              super(hook, scope, example_or_group, initial_procsy)
+        def run(position, scope, example_or_group)
+          if scope == :step
+            run_owned_hooks_for(position, scope, example_or_group)
+          else
+            super
           end
         end
+
+        protected
+
+        # TODO: This code is highly related to the RSpec internals.
+        # It should be supported with every new RSpec version
+        def matching_hooks_for(position, scope, example_or_group)
+          if scope == :step
+            repo = hooks_for(position, scope) || example_or_group.example_group.hooks.hooks_for(position, scope)
+            metadata = case example_or_group
+                         when RSpec::Core::ExampleGroup then
+                           example_or_group.class.metadata
+                         else
+                           example_or_group.metadata
+                       end
+            repo.nil? ? EMPTY_HOOK_ARRAY : repo.items_for(metadata)
+          else
+            super
+          end
+        end
+
+        def hooks_for(position, scope)
+          if scope == :step
+            position == :before ? @before_step_hooks : @after_step_hooks
+          else
+            super
+          end
+        end
+
+        def ensure_hooks_initialized_for(position, scope)
+          if scope == :step
+            if position == :before
+              @before_step_hooks ||= @filterable_item_repo_class.new(:all?)
+            else
+              @after_step_hooks ||= @filterable_item_repo_class.new(:all?)
+            end
+          else
+            super
+          end
+        end
+
+        SCOPES = [:example, :context, :step]
 
         def known_scope?(scope)
           SCOPES.include?(scope) || super(scope)

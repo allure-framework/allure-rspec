@@ -13,7 +13,8 @@ See the [releases](https://github.com/allure-framework/allure-rspec/releases) ta
 
 Add the dependency to your Gemfile. Choose the version carefully:
 * 0.5.x - for RSpec2.
-* 0.6.x - for RSpec3.
+* <= 0.6.7 - for RSpec < 3.2.
+* >= 0.6.9 - for RSpec >= 3.2.
 
 ```ruby
  gem 'allure-rspec'

@@ -89,17 +89,22 @@ module AllureRSpec
       labels
     end
 
+    def method_or_key(metadata, key)
+      metadata.respond_to?(key) ? metadata.send(key) : metadata[key]
+    end
+
     def detect_feature_story(labels, example_or_group)
       metadata = metadata(example_or_group)
       is_group = group?(example_or_group)
-      parent = metadata[:parent_example_group] || metadata[:example_group]
+      parent = (method_or_key(metadata, :parent_example_group))
       if labels[:feature] === true
-        description = (!is_group && parent) ? parent[:description] : metadata[:description]
+        description = (!is_group && parent) ? method_or_key(parent, :description) : method_or_key(metadata, :description)
         labels[:feature] = description
         if labels[:story] === true
           if parent
-            grandparent = parent && parent[:parent_example_group]
-            labels[:feature] = (!is_group && grandparent) ? grandparent[:description] : parent[:description]
+            grandparent = parent && method_or_key(parent, :parent_example_group)
+            labels[:feature] = (!is_group && grandparent) ? method_or_key(grandparent, :description) :
+                method_or_key(parent, :description)
           end
           labels[:story] = description
         end

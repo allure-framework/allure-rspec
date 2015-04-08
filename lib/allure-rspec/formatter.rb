@@ -53,16 +53,16 @@ module AllureRSpec
     private
 
     def description(data, attr = :full_description)
-      ((data.respond_to?(attr)) ?
+      ((((data.respond_to?(attr)) ?
           data.send(attr) : data.metadata[attr]) ||
-          description(data, :description)
+          description(data, :description)) || '').strip
     end
 
     def stop_test(example, opts = {})
       res = example.execution_result
       AllureRubyAdaptorApi::Builder.stop_test(
           description(example.example_group).to_s,
-          description(example).to_s,
+          (example.metadata[:description_args].size== 0) ? description(example.example_group) : description(example).to_s,
           {
               :status => res.status,
               :finished_at => res.finished_at,

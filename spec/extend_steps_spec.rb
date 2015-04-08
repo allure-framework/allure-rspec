@@ -47,7 +47,7 @@ describe AllureRSpec, :feature => "Basics" do
     end
 
     e.step "step3" do
-      expect(0).to be eql(1)
+      expect(0).to eq(1)
     end
   end
 
@@ -72,5 +72,15 @@ describe AllureRSpec, :feature => "Basics" do
   end
 
   it "is a pending example"
+
+  context "some context" do
+    it do |e|
+      expect("aa").to eq("aa")
+    end
+
+    it do |e|
+      expect(5).to eq(6)
+    end
+  end
 
 end

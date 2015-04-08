@@ -18,4 +18,6 @@ describe "Some another spec", :feature => ["Some Feature"], :severity => :normal
   it "4 must not be equal to 5" do
     5.should == 4
   end
+
+  it "must be pending"
 end

@@ -39,6 +39,11 @@ module AllureRSpec
     end
 
     def example_pending(example)
+      AllureRubyAdaptorApi::Builder.stop_test(
+          example.metadata[:example_group][:description_args].first,
+          example.metadata[:description],
+          :status => :pending
+      )
       super
     end
 

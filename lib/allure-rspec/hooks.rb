@@ -11,18 +11,20 @@ module AllureRSpec
       alias_method :old_hooks, :hooks
 
       def hooks
-        @__hooks ||= OverridenHookCollections.new(self, RSpec::Core::FilterableItemRepository::UpdateOptimized)
+        @__hooks ||= OverridenHookCollections.new(old_hooks)
       end
 
       private
 
       class OverridenHookCollections < RSpec::Core::Hooks::HookCollections
-        def initialize(*args)
-          super
+        def initialize(original)
+          super(original.instance_eval("@owner"), original.instance_eval("@filterable_item_repo_class"))
+          [:@before_example_hooks, :@after_example_hooks, :@before_context_hooks, :@after_context_hooks, :@around_example_hooks].each { |var|
+            instance_variable_set(var, original.instance_eval("#{var}"))
+          }
           @before_step_hooks = nil
           @after_step_hooks = nil
         end
-
 
         def run(position, scope, example_or_group)
           if scope == :step

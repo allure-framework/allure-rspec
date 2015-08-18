@@ -25,10 +25,6 @@ module AllureRSpec
 
   class Context
     attr_accessor :rspec
-
-    def rspec
-      @rspec
-    end
   end
 
   class << self

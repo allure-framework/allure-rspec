@@ -53,9 +53,11 @@ module AllureRSpec
     private
 
     def description(data, attr = :full_description)
-      ((((data.respond_to?(attr)) ?
-          data.send(attr) : data.metadata[attr]) ||
-          description(data, :description)) || '').strip
+      use_attr = data.is_a?(RSpec::Core::Example) ?
+        :description : attr
+
+      ((data.respond_to?(use_attr) ?
+        data.send(use_attr) : data.metadata[use_attr]) || '').strip
     end
 
     def stop_test(example, opts = {})

@@ -31,7 +31,13 @@ module AllureRSpec
         step = current_step
         AllureRubyAdaptorApi::Builder.add_attachment suite, test, opts.merge(:title => title, :file => file, :step => step)
       end
-
+      
+      def attach_data(title, data, suffix = 'txt', opts = {})
+        file = "./.rspec_temp_data.#{suffix}"
+        File.open(file, 'w') { |f| f.write data.to_s }
+        attach_file(title, File.new(file), opts)
+      end
+      
       private
 
       def __full_description(data)

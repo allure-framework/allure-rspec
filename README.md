@@ -37,6 +37,7 @@ within your current directory.
     AllureRSpec.configure do |c|
       c.output_dir = "/whatever/you/like" # default: gen/allure-results
       c.clean_dir = false # clean the output directory first? (default: true)
+      c.logging_level = Logger::DEBUG # logging level (default: DEBUG)
     end
 ```
 

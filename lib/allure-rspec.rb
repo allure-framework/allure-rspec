@@ -12,6 +12,7 @@ module AllureRSpec
       attr_accessor :clean_dir
 
       DEFAULT_OUTPUT_DIR = 'gen/allure-results'
+      DEFAULT_LOGGING_LEVEL = Logger::DEBUG
 
       def output_dir
         @output_dir || DEFAULT_OUTPUT_DIR
@@ -19,6 +20,10 @@ module AllureRSpec
 
       def clean_dir?
         @clean_dir.nil? ? true : @clean_dir
+      end
+
+      def logging_level
+        @logging_level || DEFAULT_LOGGING_LEVEL
       end
     end
   end
@@ -42,6 +47,7 @@ module AllureRSpec
       yield Config
       AllureRubyAdaptorApi.configure { |c|
         c.output_dir = Config.output_dir
+        c.logging_level = Config.logging_level
       }
     end
   end

@@ -10,6 +10,7 @@ module AllureRSpec
     class << self
       attr_accessor :output_dir
       attr_accessor :clean_dir
+      attr_accessor :logging_level
 
       DEFAULT_OUTPUT_DIR = 'gen/allure-results'
       DEFAULT_LOGGING_LEVEL = Logger::DEBUG

@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_dependency 'rspec', '~> 3.2'
-  s.add_dependency 'allure-ruby-adaptor-api', '0.6.7'
+  s.add_dependency 'allure-ruby-adaptor-api', '0.6.8'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'

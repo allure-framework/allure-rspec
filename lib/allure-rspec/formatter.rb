@@ -8,7 +8,7 @@ module AllureRSpec
 
     NOTIFICATIONS = [:example_group_started, :example_group_finished, :example_started,
                      :example_failed, :example_passed, :example_pending, :start, :stop]
-    ALLOWED_LABELS = [:feature, :story, :severity, :language, :framework]
+    ALLOWED_LABELS = [:feature, :story, :severity, :language, :framework, :host]
 
     def example_failed(notification)
       res = notification.example.execution_result

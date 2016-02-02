@@ -50,11 +50,11 @@ describe MySpec, :feature => "Some feature", :severity => :normal do
     puts "Before step #{s.current_step}"
   end
 
-  it "should be critical", :story => "First story", :severity => :critical do
+  it "should be critical", :story => "First story", :severity => :critical, :testId => 99 do
     "string".should == "string"
   end
 
-  it "should be steps enabled", :story => ["First story", "Second story"] do |e|
+  it "should be steps enabled", :story => ["First story", "Second story"], :testId => 31 do |e|
 
     e.step "step1" do |s|
       s.attach_file "screenshot1", take_screenshot_as_file

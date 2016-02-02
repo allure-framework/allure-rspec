@@ -11,11 +11,11 @@ describe "Some another spec", :feature => ["Some Feature"], :severity => :normal
     puts "after suite"
   end
 
-  it "10 cannot be greater than 19", :story => ["Some story"]  do
+  it "10 cannot be greater than 19", :story => ["Some story"], :testId => 10  do
     expect(10).to be > 19
   end
 
-  it "4 must not be equal to 5" do
+  it "4 must not be equal to 5", :testId => 20 do
     expect(5).to be eql(4)
   end
 end

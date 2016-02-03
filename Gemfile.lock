@@ -2,13 +2,13 @@ PATH
   remote: .
   specs:
     allure-rspec (0.7.6)
-      allure-ruby-adaptor-api (= 0.6.9)
+      allure-ruby-adaptor-api (= 0.6.10)
       rspec (~> 3.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    allure-ruby-adaptor-api (0.6.9)
+    allure-ruby-adaptor-api (0.6.10)
       mimemagic
       nokogiri (~> 1.6.0)
       uuid

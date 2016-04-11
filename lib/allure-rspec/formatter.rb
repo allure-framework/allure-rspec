@@ -1,6 +1,7 @@
 require 'rspec/core' unless defined?(RSpec::Core)
 require 'rspec/core/formatters/base_formatter' unless defined?(RSpec::Core::Formatters::BaseFormatter)
 require 'fileutils'
+require 'pathname'
 
 module AllureRSpec
 

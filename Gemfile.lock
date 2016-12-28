@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     allure-rspec (0.8.0)
-      allure-ruby-adaptor-api (= 0.7)
+      allure-ruby-adaptor-api (= 0.7.0)
       rspec (~> 3.5)
 
 GEM

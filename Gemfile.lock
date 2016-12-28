@@ -1,38 +1,38 @@
 PATH
   remote: .
   specs:
-    allure-rspec (0.7.7)
-      allure-ruby-adaptor-api (= 0.6.10)
-      rspec (~> 3.2)
+    allure-rspec (0.8.0)
+      allure-ruby-adaptor-api (= 0.7.0)
+      rspec (~> 3.5)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    allure-ruby-adaptor-api (0.6.10)
+    allure-ruby-adaptor-api (0.7.0)
       mimemagic
-      nokogiri (~> 1.6.0)
+      nokogiri (~> 1.7)
       uuid
     diff-lcs (1.2.5)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mimemagic (0.3.1)
-    mini_portile2 (2.0.0)
-    nokogiri (1.6.7.2)
-      mini_portile2 (~> 2.0.0.rc2)
+    mimemagic (0.3.2)
+    mini_portile2 (2.1.0)
+    nokogiri (1.7.0)
+      mini_portile2 (~> 2.1.0)
     rake (10.4.2)
-    rspec (3.4.0)
-      rspec-core (~> 3.4.0)
-      rspec-expectations (~> 3.4.0)
-      rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.2)
-      rspec-support (~> 3.4.0)
-    rspec-expectations (3.4.0)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.4)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.4.0)
-    rspec-mocks (3.4.1)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.4.0)
-    rspec-support (3.4.1)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
     systemu (2.6.5)
     uuid (2.3.8)
       macaddr (~> 1.0)
@@ -46,4 +46,4 @@ DEPENDENCIES
   rake
 
 BUNDLED WITH
-   1.10.5
+   1.13.7

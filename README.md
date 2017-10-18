@@ -23,6 +23,8 @@ Add the dependency to your Gemfile. Choose the version carefully:
 And then include it in your spec_helper.rb:
 
 ```ruby
+    require 'allure-rspec'
+
     RSpec.configure do |c|
       c.include AllureRSpec::Adaptor
     end

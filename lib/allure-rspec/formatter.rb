@@ -11,9 +11,14 @@ module AllureRSpec
     ALLOWED_LABELS = [:feature, :story, :severity, :language, :framework, :issue, :testId, :host, :thread]
 
     def example_failed(notification)
-      res = notification.example.execution_result
-      status = res.exception.is_a?(RSpec::Expectations::ExpectationNotMetError) ? :failed : :broken
-      stop_test(notification.example, :exception => res.exception, :status => status)
+      begin
+        res = notification.example.execution_result
+        raise res.exception, "#{res.exception.message}" if res.exception.is_a?(RSpec::Expectations::MultipleExpectationsNotMetError)
+        status = res.exception.is_a?(RSpec::Expectations::ExpectationNotMetError) ? :failed : :broken
+        stop_test(notification.example, :exception => res.exception, :status => status)
+      rescue RSpec::Expectations::MultipleExpectationsNotMetError => failure
+        stop_test(notification.example, :exception => failure, :status => :failed)
+      end
     end
 
     def example_group_finished(notification)

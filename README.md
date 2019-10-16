@@ -1,4 +1,7 @@
-# Allure RSpec Adaptor
+# [DEPRECATED]
+## Please follow https://github.com/allure-framework/allure-ruby
+Allure RSpec Adaptor
+=====================
 
 [![Gem Version](https://badge.fury.io/rb/allure-rspec.svg)](http://badge.fury.io/rb/allure-rspec)
 
